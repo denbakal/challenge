@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html data-ng-app="MyApp">
+<head>
+    <meta charset="utf-8">
+    <script src="js/lib/angular.min.js"></script>
+    <script src="js/lib/angular-route.min.js"></script>
+    <script>angular.module('MyApp', ['ngRoute'])</script>
+    <script src="js/router.js"></script>
+    <script src="js/controllers/darkSideCtrl.js"></script>
+    <script src="js/controllers/lightSideCtrl.js"></script>
+    <script src="js/controllers/donwloadCtrl.js"></script>
+
+    <title>Main Page</title>
+</head>
+<body>
+    <h2>Welcome to Main Page!</h2>
+    <p>Which side do you like more?</p>
+    <nav><a href="#/darkSide">Dark side!</a>|<a href="#/lightSide">Light side!</a></nav>
+    <ng-view></ng-view>
+
+    <div data-ng-controller = "downloadCtrl">
+        <button ng-click="download()">click</button>
+        <!--<a>{{counter}}</a>-->
+    </div>
+
+</body>
+</html>
