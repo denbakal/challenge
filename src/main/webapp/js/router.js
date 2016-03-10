@@ -1,4 +1,4 @@
-var myApp = angular.module('MyApp');
+var myApp = angular.module('MyApp', ['ngRoute']);
 
 myApp.config(function($routeProvider){
     $routeProvider.when('/darkSide',
