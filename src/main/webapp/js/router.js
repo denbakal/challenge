@@ -1,4 +1,4 @@
-var myApp = angular.module('MyApp', ['ngRoute']);
+var myApp = angular.module('MyApp', ['ngRoute', 'ngSanitize', 'ui.select']);
 
 myApp.config(function($routeProvider){
     $routeProvider.when('/darkSide',

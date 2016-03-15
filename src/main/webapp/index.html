@@ -4,7 +4,9 @@
     <meta charset="utf-8">
     <script src="js/lib/angular.min.js"></script>
     <script src="js/lib/angular-route.min.js"></script>
+    <script src="js/lib/angular-sanitize.js"></script>
     <script src="js/lib/FileSaver.min.js"></script>
+    <script src="js/lib/select.js"></script>
 
     <script src="js/router.js"></script>
 
@@ -14,36 +16,67 @@
     <script src="js/controllers/clickCtrl.js"></script>
     <script src="js/controllers/formController.js"></script>
 
+    <link rel="stylesheet" href="css/lib/select.css">
+    <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.css">
+    <link rel="stylesheet" href="http://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.8.5/css/selectize.default.css">
+
+    <style>
+        body {
+            padding: 15px;
+        }
+
+        fieldset {
+            width: 400px;
+        }
+    </style>
+
     <title>Main Page</title>
 </head>
 <body>
-    <h2 align="middle">Welcome to Main Page!</h2>
-    <p align="left">Which side do you like more?</p>
-    <nav><a href="#/darkSide">Dark side!</a>|<a href="#/lightSide">Light side!</a></nav>
-    <ng-view></ng-view>
+<h2 align="middle">Welcome to Main Page!</h2>
 
-    <h2 align="middle">This is a web-site with BlackJack and Sluts!</h2>
+<p align="left">Which side do you like more?</p>
+<nav><a href="#/darkSide">Dark side!</a>|<a href="#/lightSide">Light side!</a></nav>
+<ng-view></ng-view>
 
-    <div ng-controller="clickCtrl">
-        <button ng-click="click()">show me Petya!</button>
-        <a>{{response}}</a>
-    </div>
+<h2 align="middle">This is a web-site with BlackJack and Sluts!</h2>
 
-    <div style="padding-top: 10px" ng-controller="downloadCtrl">
-        <button style="width: 111px" ng-click="download()">download</button>
-    </div>
+<div ng-controller="clickCtrl">
+    <button ng-click="click()">Show me Petya!</button>
+    <a>{{response}}</a>
+</div>
 
-    <h3 align="left">Please register to make me feel better</h3>
-    <div style="padding-top: 10px" ng-controller="formController">
-        <form name="form">
+<div style="padding-top: 10px" ng-controller="downloadCtrl">
+    <button style="width: 120px" ng-click="download()">Download</button>
+</div>
+
+<h3 align="left">Please register to make me feel better:</h3>
+
+<div style="padding-top: 10px" ng-controller="formController">
+    <form name="form">
         <fieldset>
-            <p><label for="name">Login Name</label>
-                <input id="name" ng-model="login.name" required placeholder="enter name"/>
+            <p><label for="name">Login Name: </label>
+                <input id="name" ng-model="login.name" required placeholder="Enter name"/>
             </p>
+
+            <p><label for="password">Password: </label>
+                <input id="password" ng-model="login.password" required placeholder="Enter password"/>
+            </p>
+
+            <label>Country: </label>
+            <ui-select ng-model="login.country" theme="selectize" required>
+                <ui-select-match placeholder="Select or search a country in the list...">{{$select.selected.name}}
+                </ui-select-match>
+                <ui-select-choices repeat="country in countries | filter: $select.search">
+                    <span ng-bind-html="country.name | highlight: $select.search"></span>
+                    <small ng-bind-html="country.code | highlight: $select.search"></small>
+                </ui-select-choices>
+            </ui-select>
+
             <button type="submit" ng-click="save(login, form)">Submit</button>
         </fieldset>
-        </form>
-    </div>
+    </form>
+</div>
 
 </body>
 </html>
