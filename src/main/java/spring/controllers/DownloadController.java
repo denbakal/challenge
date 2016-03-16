@@ -1,6 +1,7 @@
 package main.java.spring.controllers;
 
 import org.apache.tomcat.util.http.fileupload.IOUtils;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -8,18 +9,35 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.servlet.http.HttpServletResponse;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipInputStream;
+import java.util.zip.ZipOutputStream;
 
 @RestController
 public class DownloadController {
 
-    @RequestMapping(value = "/download", method = RequestMethod.POST)
+    @RequestMapping(value = "/download", method = RequestMethod.POST, produces = "application/pdf")
     private void getFile(HttpServletResponse response) throws IOException {
         File file = new File("D:\\WORK\\challenge\\src\\main\\webapp\\com\\uploads\\Application_Schengen_Visa.pdf");
         FileInputStream stream = new FileInputStream(file);
 
         IOUtils.copy(stream, response.getOutputStream());
-        response.setContentType("application/pdf");
-        response.flushBuffer();
+
+        stream.close();
+    }
+
+    @RequestMapping(value = "/downloadZip", method = RequestMethod.POST, produces = "application/zip")
+    private void getFileZip(HttpServletResponse response) throws IOException {
+        ZipEntry entry = new ZipEntry("Application.pdf");
+        ZipOutputStream zipOutputStream = new ZipOutputStream(response.getOutputStream());
+        FileInputStream fileInputStream = new FileInputStream("D:\\WORK\\challenge\\src\\main\\webapp\\com\\uploads\\Application_Schengen_Visa.pdf");
+
+        zipOutputStream.putNextEntry(entry);
+        IOUtils.copy(fileInputStream, zipOutputStream);
+
+        zipOutputStream.closeEntry();
+        zipOutputStream.close();
     }
 }

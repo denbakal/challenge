@@ -4,7 +4,9 @@ myApp.controller('formController', function fromController($scope) {
     $scope.login = {
         name: '',
         password: '',
-        country: ''
+        country: '',
+        lifeForm: '',
+        birthDate: ''
     };
 
     $scope.countries = [
@@ -16,8 +18,9 @@ myApp.controller('formController', function fromController($scope) {
     $scope.save = function (login, form) {
         if (form.$valid) {
             alert("Gotcha!Now, you are my bitch, " + login.name + "!" +
-                  " I know your pass is " + login.password + "." +
-                  " And you live in " + login.country.name + "!"
+                " I know your pass is " + login.password + "." +
+                " And you live in " + login.country.name + "!" +
+                " And you are a " + login.lifeForm + " and your birthdate is " + login.birthDate.format('yyyy-mm-dd') + "!"
             )
         }
     };

@@ -7,6 +7,7 @@
     <script src="js/lib/angular-sanitize.js"></script>
     <script src="js/lib/FileSaver.min.js"></script>
     <script src="js/lib/select.js"></script>
+    <script src="js/lib/dateFormat.js"></script>
 
     <script src="js/router.js"></script>
 
@@ -27,13 +28,14 @@
 
         fieldset {
             width: 400px;
+            border-style: solid;
         }
     </style>
 
     <title>Main Page</title>
 </head>
 <body>
-<h2 align="middle">Welcome to Main Page!</h2>
+<h2 align="middle">Welcome to the Main Page!</h2>
 
 <p align="left">Which side do you like more?</p>
 <nav><a href="#/darkSide">Dark side!</a>|<a href="#/lightSide">Light side!</a></nav>
@@ -47,23 +49,24 @@
 </div>
 
 <div style="padding-top: 10px" ng-controller="downloadCtrl">
-    <button style="width: 120px" ng-click="download()">Download</button>
+    <button style="width: 120px" ng-click="download()">Download app</button>
+    <button style="width: 120px" ng-click="downloadZip()">Download Zip</button>
 </div>
-
-<h3 align="left">Please register to make me feel better:</h3>
 
 <div style="padding-top: 10px" ng-controller="formController">
     <form name="form">
         <fieldset>
-            <p><label for="name">Login Name: </label>
-                <input id="name" ng-model="login.name" required placeholder="Enter name"/>
+            <legend>Please register to make me feel better</legend>
+            <p><label for="name">Login Name:</label><br>
+                <input id="name" ng-model="login.name" required placeholder="Enter name" style="padding-top: 5px;"/>
             </p>
 
-            <p><label for="password">Password: </label>
-                <input id="password" ng-model="login.password" required placeholder="Enter password"/>
+            <p><label for="password">Password:</label><br>
+                <input id="password" ng-model="login.password" required placeholder="Enter password"
+                       style="padding-top: 5px;"/>
             </p>
 
-            <label>Country: </label>
+            <label>Country:</label>
             <ui-select ng-model="login.country" theme="selectize" required>
                 <ui-select-match placeholder="Select or search a country in the list...">{{$select.selected.name}}
                 </ui-select-match>
@@ -72,6 +75,18 @@
                     <small ng-bind-html="country.code | highlight: $select.search"></small>
                 </ui-select-choices>
             </ui-select>
+
+            <p><label>Select your life form:</label><br>
+                <label for="human">Human</label>
+                    <input ng-model="login.lifeForm" id="human" required type="radio" name="lifeForm" value="Human"><br>
+                <label for="alien">Alien</label>
+                    <input ng-model="login.lifeForm" id="alien" type="radio" name="lifeForm" value="Alien"><br>
+                <label for="cat">Cat</label>
+                    <input ng-model="login.lifeForm" id="cat" type="radio" name="lifeForm" value="Cat">
+            </p>
+
+            <label for="calendar">Choose you birthdate:</label><br>
+            <input required ng-model="login.birthDate" id="calendar" type="date" name="calendar"><br><br>
 
             <button type="submit" ng-click="save(login, form)">Submit</button>
         </fieldset>
