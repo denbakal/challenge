@@ -20,7 +20,7 @@ public class DownloadController {
 
     @RequestMapping(value = "/download", method = RequestMethod.POST, produces = "application/pdf")
     private void getFile(HttpServletResponse response) throws IOException {
-        File file = new File("D:\\WORK\\challenge\\src\\main\\webapp\\com\\uploads\\Application_Schengen_Visa.pdf");
+        File file = new File("src/main/webapp/com/uploads/Application_Schengen_Visa.pdf");
         FileInputStream stream = new FileInputStream(file);
 
         IOUtils.copy(stream, response.getOutputStream());
@@ -32,7 +32,7 @@ public class DownloadController {
     private void getFileZip(HttpServletResponse response) throws IOException {
         ZipEntry entry = new ZipEntry("Application.pdf");
         ZipOutputStream zipOutputStream = new ZipOutputStream(response.getOutputStream());
-        FileInputStream fileInputStream = new FileInputStream("D:\\WORK\\challenge\\src\\main\\webapp\\com\\uploads\\Application_Schengen_Visa.pdf");
+        FileInputStream fileInputStream = new FileInputStream("src/main/webapp/com/uploads/Application_Schengen_Visa.pdf");
 
         zipOutputStream.putNextEntry(entry);
         IOUtils.copy(fileInputStream, zipOutputStream);

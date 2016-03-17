@@ -1,6 +1,6 @@
 var myApp = angular.module('MyApp');
 
-myApp.controller('formController', function ($scope, $http, $location) {
+myApp.controller('formCtrl', function ($scope, $http, $location) {
     $scope.login = {
         name: '',
         password: '',
