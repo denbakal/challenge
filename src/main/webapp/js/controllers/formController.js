@@ -1,6 +1,6 @@
 var myApp = angular.module('MyApp');
 
-myApp.controller('formController', function fromController($scope) {
+myApp.controller('formController', function ($scope, $http, $location) {
     $scope.login = {
         name: '',
         password: '',
@@ -17,10 +17,12 @@ myApp.controller('formController', function fromController($scope) {
 
     $scope.save = function (login, form) {
         if (form.$valid) {
-            alert("Gotcha!Now, you are my bitch, " + login.name + "!" +
-                " I know your pass is " + login.password + "." +
-                " And you live in " + login.country.name + "!" +
-                " And you are a " + login.lifeForm + " and your birthdate is " + login.birthDate.format('yyyy-mm-dd') + "!"
+            $http.post('/register', login, {}).success(function (answer) {
+                    if (answer == "1") {
+                        //$window.location.href = '/register';
+                        $location.url('/register');
+                    }
+                }
             )
         }
     };
