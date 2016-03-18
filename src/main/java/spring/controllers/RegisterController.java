@@ -10,10 +10,8 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class RegisterController {
 
-    @RequestMapping(value = "/register", method = RequestMethod.POST)
+    @RequestMapping(value = "#/register", method = RequestMethod.POST)
     private String register(@RequestBody Login login) {
-        System.out.println(login.getBirthDate());
-
         return login.getName().equalsIgnoreCase("Vasya") ? "1" : "0";
     }
 }

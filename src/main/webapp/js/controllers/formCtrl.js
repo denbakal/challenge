@@ -19,8 +19,7 @@ myApp.controller('formCtrl', function ($scope, $http, $location) {
         if (form.$valid) {
             $http.post('/register', login, {}).success(function (answer) {
                     if (answer == "1") {
-                        //$window.location.href = '/register';
-                        $location.url('/register');
+                       $location.path('/register');
                     }
                 }
             )

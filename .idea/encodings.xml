@@ -3,8 +3,6 @@
   <component name="Encoding">
     <file url="file://$PROJECT_DIR$/pom.xml" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/src" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/src/main/webapp/css/lib/select.css" charset="windows-1251" />
-    <file url="file://$PROJECT_DIR$/src/main/webapp/css/lib/select.min.css" charset="windows-1251" />
     <file url="file://$PROJECT_DIR$/src/main/webapp/js/lib/FileSaver.min.js" charset="windows-1251" />
     <file url="file://$PROJECT_DIR$/src/main/webapp/js/lib/select.js" charset="windows-1251" />
     <file url="file://$PROJECT_DIR$/src/main/webapp/js/lib/select.min.js" charset="windows-1251" />
