@@ -1,7 +1,6 @@
 package main.java.spring.controllers;
 
 import org.apache.tomcat.util.http.fileupload.IOUtils;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -9,10 +8,8 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.servlet.http.HttpServletResponse;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.zip.ZipEntry;
-import java.util.zip.ZipInputStream;
 import java.util.zip.ZipOutputStream;
 
 @RestController
@@ -37,6 +34,7 @@ public class DownloadController {
         zipOutputStream.putNextEntry(entry);
         IOUtils.copy(fileInputStream, zipOutputStream);
 
+        fileInputStream.close();
         zipOutputStream.closeEntry();
         zipOutputStream.close();
     }
