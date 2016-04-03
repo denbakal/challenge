@@ -1,2 +1,0 @@
-# challenge
-God help us!
