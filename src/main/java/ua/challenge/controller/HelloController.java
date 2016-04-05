@@ -12,9 +12,9 @@ import sun.plugin.liveconnect.SecurityContextHelper;
 @RestController
 @RequestMapping("/rest")
 public class HelloController {
-    @RequestMapping(value = "/hello")
-    public String hello() {
-        return "hello";
+    @RequestMapping("/hello")
+    private String home() {
+        return "This is hidden hello page";
     }
 
     @RequestMapping(value = "/login", method = RequestMethod.POST)
