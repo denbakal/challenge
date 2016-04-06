@@ -15,5 +15,5 @@ import java.lang.annotation.*;
 public @interface WithMockCustomUser {
     String username() default "user";
 
-    String name() default "Tender Tool User";
+    String name() default "Test User";
 }
