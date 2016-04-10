@@ -26,8 +26,8 @@ public class SandboxController {
         log.info("isbn-1234 -->" + bookRepository.getByIsbn("isbn-1234"));
     }
 
-    @RequestMapping("/book/cashe")
-    public void fetchBooksFromCashe() {
+    @RequestMapping("/book/cache")
+    public void fetchBooksFromCache() {
         log.info(".... Fetching books");
         log.info("isbn-1234 -->" + bookRepository.getByIsbn("isbn-1234"));
         log.info("isbn-4567 -->" + bookRepository.getByIsbn("isbn-4567"));
