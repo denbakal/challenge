@@ -5,7 +5,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import ua.challenge.sandbox.cashe.BookRepository;
+import ua.challenge.sandbox.cache.BookRepository;
 
 /**
  * Created by d.bakal on 4/10/2016.

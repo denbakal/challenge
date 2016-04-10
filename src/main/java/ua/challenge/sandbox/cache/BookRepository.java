@@ -1,4 +1,4 @@
-package ua.challenge.sandbox.cashe;
+package ua.challenge.sandbox.cache;
 
 /**
  * Created by d.bakal on 4/10/2016.

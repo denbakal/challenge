@@ -1,4 +1,4 @@
-package ua.challenge.sandbox.cashe;
+package ua.challenge.sandbox.cache;
 
 import org.springframework.cache.annotation.Cacheable;
 

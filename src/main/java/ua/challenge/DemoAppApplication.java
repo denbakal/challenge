@@ -5,8 +5,8 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
-import ua.challenge.sandbox.cashe.BookRepository;
-import ua.challenge.sandbox.cashe.SimpleBookRepository;
+import ua.challenge.sandbox.cache.BookRepository;
+import ua.challenge.sandbox.cache.SimpleBookRepository;
 
 @SpringBootApplication
 public class DemoAppApplication {
