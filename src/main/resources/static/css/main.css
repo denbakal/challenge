@@ -1,0 +1,8 @@
+body {
+    padding: 15px;
+}
+
+fieldset {
+    width: 400px;
+    border-style: solid;
+}

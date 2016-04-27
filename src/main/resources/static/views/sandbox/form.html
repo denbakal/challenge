@@ -1,0 +1,40 @@
+<h2>Example: Sending form</h2>
+<div style="padding-top: 10px">
+    <form name="form">
+        <fieldset>
+            <legend>Please register to make me feel better</legend>
+            <p><label for="name">Login Name:</label><br>
+                <input id="name" ng-model="login.name" required placeholder="Enter name" style="padding-top: 5px;"/>
+            </p>
+
+            <p><label for="password">Password:</label><br>
+                <input type="password" id="password" ng-model="login.password" required placeholder="Enter password"
+                       style="padding-top: 5px;"/>
+            </p>
+
+            <label>Country:</label>
+            <ui-select ng-model="login.country" theme="selectize" required>
+                <ui-select-match placeholder="Select or search a country in the list...">{{$select.selected.name}}
+                </ui-select-match>
+                <ui-select-choices repeat="country in countries | filter: $select.search">
+                    <span ng-bind-html="country.name | highlight: $select.search"></span>
+                    <small ng-bind-html="country.code | highlight: $select.search"></small>
+                </ui-select-choices>
+            </ui-select>
+
+            <p><label>Select your life form:</label><br>
+                <label for="human">Human</label>
+                <input ng-model="login.lifeForm" id="human" required type="radio" name="lifeForm" value="Human"><br>
+                <label for="alien">Alien</label>
+                <input ng-model="login.lifeForm" id="alien" type="radio" name="lifeForm" value="Alien"><br>
+                <label for="cat">Cat</label>
+                <input ng-model="login.lifeForm" id="cat" type="radio" name="lifeForm" value="Cat">
+            </p>
+
+            <label for="calendar">Choose you birthdate:</label><br>
+            <input required ng-model="login.birthDate" id="calendar" type="date" name="calendar"><br><br>
+
+            <button type="submit" ng-click="save(login, form)">Submit</button>
+        </fieldset>
+    </form>
+</div>
