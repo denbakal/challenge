@@ -12,5 +12,5 @@ import java.lang.annotation.*;
 public @interface WithMockCustomUser {
     String username() default "user";
 
-    String name() default "Test User";
+    String name() default "UserTest User";
 }
