@@ -1,5 +1,5 @@
 angular.module('challenge.sandbox', [
-    'ui.router'
+    'ui.router', 'ngSanitize', 'ui.select'
 ]).config(function ($stateProvider) {
     $stateProvider
         .state('sandbox', {
