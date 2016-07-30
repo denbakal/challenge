@@ -37,9 +37,9 @@ import java.util.Collection;
 /**
  * Created by d.bakal on 3/12/2016.
  */
-@Configuration
-@EnableWebSecurity
-@EnableGlobalMethodSecurity(securedEnabled = true)
+//@Configuration
+//@EnableWebSecurity
+//@EnableGlobalMethodSecurity(securedEnabled = true)
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Value("${current.realm}")
     private String realm;
