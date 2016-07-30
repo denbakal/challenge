@@ -4,13 +4,16 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.EnableAspectJAutoProxy;
 import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
 import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
+import org.springframework.scheduling.annotation.EnableAsync;
 import ua.challenge.sandbox.cache.BookRepository;
 import ua.challenge.sandbox.cache.SimpleBookRepository;
 
 @SpringBootApplication
 @EnableMongoRepositories
+@EnableAspectJAutoProxy
 public class DemoAppApplication {
     // todo maybe remove
     @Bean
