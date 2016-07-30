@@ -14,6 +14,7 @@ import ua.challenge.sandbox.cache.SimpleBookRepository;
 @SpringBootApplication
 @EnableMongoRepositories
 @EnableAspectJAutoProxy
+@EnableAsync
 public class DemoAppApplication {
     // todo maybe remove
     @Bean

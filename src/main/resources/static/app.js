@@ -3,6 +3,7 @@ var challenge = angular.module('challenge', [
     'challenge.login',
     'challenge.sandbox',
     'challenge.booking',
+    'challenge.activity',
     'ui.router',
     'angular-jwt',
     'angular-storage'
