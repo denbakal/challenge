@@ -2,6 +2,7 @@ var challenge = angular.module('challenge', [
     'challenge.home',
     'challenge.login',
     'challenge.sandbox',
+    'challenge.booking',
     'ui.router',
     'angular-jwt',
     'angular-storage'
