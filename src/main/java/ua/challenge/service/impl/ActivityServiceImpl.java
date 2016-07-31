@@ -33,14 +33,14 @@ public class ActivityServiceImpl implements ActivityService {
         }
         Activity activity = new Activity();
         activity.setActionName(actionName);
-        activity.setActivityStatus(ActivityStatus.IN_SERVICE.name());
+        activity.setActivityStatus(ActivityStatus.IN_SERVICE);
         save(activity);
         try {
             Thread.sleep(10000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        activity.setActivityStatus(ActivityStatus.SUCCESS.name());
+        activity.setActivityStatus(ActivityStatus.SUCCESS);
         save(activity);
     }
 }

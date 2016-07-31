@@ -16,7 +16,8 @@ public class Activity {
 
     private String actionName;
 
-    private String activityStatus;
+    @Enumerated(EnumType.STRING)
+    private ActivityStatus activityStatus;
 
     public Activity() {
     }
@@ -37,11 +38,11 @@ public class Activity {
         this.actionName = actionName;
     }
 
-    public String getActivityStatus() {
+    public ActivityStatus getActivityStatus() {
         return activityStatus;
     }
 
-    public void setActivityStatus(String activityStatus) {
+    public void setActivityStatus(ActivityStatus activityStatus) {
         this.activityStatus = activityStatus;
     }
 
@@ -54,7 +55,7 @@ public class Activity {
 
         if (id != activity.id) return false;
         if (actionName != null ? !actionName.equals(activity.actionName) : activity.actionName != null) return false;
-        return !(activityStatus != null ? !activityStatus.equals(activity.activityStatus) : activity.activityStatus != null);
+        return activityStatus == activity.activityStatus;
 
     }
 
@@ -71,7 +72,7 @@ public class Activity {
         return "Activity{" +
                 "id=" + id +
                 ", actionName='" + actionName + '\'' +
-                ", activityStatus='" + activityStatus + '\'' +
+                ", activityStatus=" + activityStatus +
                 '}';
     }
 }
