@@ -16,6 +16,12 @@ angular.module('challenge.booking', [
 
 }).controller('booking.controller', function ($scope, $http) {
 }).controller('country.controller', function ($scope, $http) {
+    $http.get("/country/get")
+        .success(function(data, status) {
+        })
+        .error(function(data, status) {
+        });
+
     $scope.country = "";
     $scope.sendCountry = function () {
         $http.post("/country", null, {params: {country: $scope.country}})

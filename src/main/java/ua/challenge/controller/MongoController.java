@@ -14,10 +14,10 @@ import ua.challenge.sandbox.cache.MongoDbConfig;
 
 @RestController
 public class MongoController {
-    ApplicationContext ctx = new AnnotationConfigApplicationContext(MongoDbConfig.class);
-    MongoOperations mongoOperation = (MongoOperations) ctx.getBean("mongoTemplate");
+//    ApplicationContext ctx = new AnnotationConfigApplicationContext(MongoDbConfig.class);
+//    MongoOperations mongoOperation = (MongoOperations) ctx.getBean("mongoTemplate");
 
-    @RequestMapping(value = "/", method = RequestMethod.GET)
+    /*@RequestMapping(value = "/", method = RequestMethod.GET)
     private void clickMongo() {
         Query query = new Query(Criteria.where("name").is("Kostian"));
         UserTest test = new UserTest("Kostian", "1");
@@ -26,5 +26,5 @@ public class MongoController {
         System.out.println(mongoOperation.findOne(query, UserTest.class));
 //        System.out.println(mongoOperation.findAll(UserTest.class));
         mongoOperation.remove(test);
-    }
+    }*/
 }

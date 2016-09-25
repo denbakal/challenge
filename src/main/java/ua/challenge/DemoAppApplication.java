@@ -12,7 +12,7 @@ import ua.challenge.sandbox.cache.BookRepository;
 import ua.challenge.sandbox.cache.SimpleBookRepository;
 
 @SpringBootApplication
-@EnableMongoRepositories
+//@EnableMongoRepositories
 @EnableAspectJAutoProxy
 @EnableAsync
 public class DemoAppApplication {
