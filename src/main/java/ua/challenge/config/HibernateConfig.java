@@ -1,5 +1,6 @@
 package ua.challenge.config;
 
+import com.p6spy.engine.spy.P6DataSource;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -37,10 +38,11 @@ public class HibernateConfig {
     public DataSource dataSource() {
         DriverManagerDataSource dataSource = new DriverManagerDataSource();
         dataSource.setDriverClassName("org.postgresql.Driver");
-        dataSource.setUrl("jdbc:postgresql://localhost:5432/challenge");
+//        dataSource.setUrl("jdbc:p6spy://localhost:5432/challenge");
+        dataSource.setUrl("jdbc:p6spy:postgresql://localhost:5432/challenge");
         dataSource.setUsername("postgres");
         dataSource.setPassword("root");
-        return dataSource;
+        return new P6DataSource(dataSource);
     }
 
     private Properties hibernateProperties() {
