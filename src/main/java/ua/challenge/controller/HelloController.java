@@ -1,10 +1,8 @@
 package ua.challenge.controller;
 
-import org.springframework.security.core.context.SecurityContext;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
-import sun.plugin.liveconnect.SecurityContextHelper;
 
 /**
  * Created by d.bakal on 3/12/2016.
