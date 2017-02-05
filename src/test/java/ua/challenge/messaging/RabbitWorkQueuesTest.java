@@ -6,8 +6,7 @@ import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import ua.challenge.config.RabbitConfiguration;
-import ua.challenge.config.RabbitWorkQueuesConfiguration;
+import ua.challenge.config.rabbit.RabbitWorkQueuesConfiguration;
 
 /**
  * Created by d.bakal on 21.01.2017.

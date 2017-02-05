@@ -1,4 +1,4 @@
-package ua.challenge.config;
+package ua.challenge.config.rabbit;
 
 import org.springframework.amqp.core.AmqpAdmin;
 import org.springframework.amqp.core.Queue;
