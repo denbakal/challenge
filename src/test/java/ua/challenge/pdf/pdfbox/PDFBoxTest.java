@@ -3,20 +3,26 @@ package ua.challenge.pdf.pdfbox;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDPage;
 import org.apache.pdfbox.pdmodel.PDPageContentStream;
+import org.apache.pdfbox.pdmodel.common.PDMetadata;
 import org.apache.pdfbox.pdmodel.encryption.AccessPermission;
 import org.apache.pdfbox.pdmodel.encryption.StandardProtectionPolicy;
-import org.apache.pdfbox.pdmodel.font.PDCIDFontType0;
 import org.apache.pdfbox.pdmodel.font.PDFont;
+import org.apache.pdfbox.pdmodel.font.PDType0Font;
 import org.apache.pdfbox.pdmodel.font.PDType1Font;
+import org.apache.pdfbox.pdmodel.graphics.color.PDOutputIntent;
 import org.apache.pdfbox.preflight.Format;
 import org.apache.pdfbox.preflight.PreflightDocument;
 import org.apache.pdfbox.preflight.ValidationResult;
 import org.apache.pdfbox.preflight.exception.SyntaxValidationException;
 import org.apache.pdfbox.preflight.parser.PreflightParser;
+import org.apache.xmpbox.XMPMetadata;
+import org.apache.xmpbox.schema.DublinCoreSchema;
+import org.apache.xmpbox.schema.PDFAIdentificationSchema;
+import org.apache.xmpbox.type.BadFieldValueException;
+import org.apache.xmpbox.xml.XmpSerializer;
 import org.junit.Test;
 
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
 
 /**
  * Created by d.bakal on 18.02.2017.
@@ -151,5 +157,77 @@ public class PDFBoxTest {
             result.getErrorsList()
                     .forEach(error -> System.out.println(error.getErrorCode() + " : " + error.getDetails()));
         }
+    }
+
+    @Test
+    public void createPdfA1b() throws Exception {
+        String file = "PdfA1b.pdf";
+
+        PDDocument document = new PDDocument();
+
+        PDPage page = new PDPage();
+        document.addPage(page);
+
+        // load the font used in the document (from dependency)
+        // PDF/A specification enforces that the fonts used in the document are present in the PDF File
+        String pathFontFile = getClass().getClassLoader().getResource("files/pdf/ttf/LiberationSans-Regular.ttf").getFile();
+        File fontFile = new File(pathFontFile);
+        PDFont font = PDType0Font.load(document, fontFile);
+
+        if (!font.isEmbedded()) {
+            throw new IllegalStateException("PDF/A compliance requires that all fonts used for"
+                    + " text rendering in rendering modes other than rendering mode 3 are embedded.");
+        }
+
+        // create a page with the message
+        PDPageContentStream contents = new PDPageContentStream(document, page);
+        contents.beginText();
+        contents.setFont(font, 12);
+        contents.newLineAtOffset(100, 700);
+        contents.showText("PDF/A Creation");
+        contents.endText();
+        contents.saveGraphicsState();
+        contents.close();
+
+        // include XMP metadata block
+        // It is required to have XMP metadata defined in the PDF
+        XMPMetadata xmp = XMPMetadata.createXMPMetadata();
+
+        try {
+            DublinCoreSchema dc = xmp.createAndAddDublinCoreSchema();
+            dc.setTitle(file);
+
+            PDFAIdentificationSchema id = xmp.createAndAddPFAIdentificationSchema();
+            id.setPart(1);
+            id.setConformance("B");
+
+            XmpSerializer serializer = new XmpSerializer();
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            serializer.serialize(xmp, baos, true);
+
+            PDMetadata metadata = new PDMetadata(document);
+            metadata.importXMPMetadata(baos.toByteArray());
+            document.getDocumentCatalog().setMetadata(metadata);
+        } catch(BadFieldValueException e) {
+            // won't happen here, as the provided value is valid
+            throw new IllegalArgumentException(e);
+        }
+
+        // include color profile
+        // It is mandatory to include the color profile used by the document
+        String pathColorProfile = getClass().getClassLoader().getResource("files/pdf/pdfa/sRGB.icc").getFile();
+        File colorProfileFile = new File(pathColorProfile);
+        InputStream colorProfile = new FileInputStream(colorProfileFile);
+
+        PDOutputIntent intent = new PDOutputIntent(document, colorProfile);
+        intent.setInfo("sRGB IEC61966-2.1");
+        intent.setOutputCondition("sRGB IEC61966-2.1");
+        intent.setOutputConditionIdentifier("sRGB IEC61966-2.1");
+        intent.setRegistryName("http://www.color.org");
+        document.getDocumentCatalog().addOutputIntent(intent);
+
+        // save document
+        document.save(file);
+        document.close();
     }
 }
