@@ -8,6 +8,10 @@ import org.apache.pdfbox.pdmodel.encryption.StandardProtectionPolicy;
 import org.apache.pdfbox.pdmodel.font.PDCIDFontType0;
 import org.apache.pdfbox.pdmodel.font.PDFont;
 import org.apache.pdfbox.pdmodel.font.PDType1Font;
+import org.apache.pdfbox.preflight.PreflightDocument;
+import org.apache.pdfbox.preflight.ValidationResult;
+import org.apache.pdfbox.preflight.exception.SyntaxValidationException;
+import org.apache.pdfbox.preflight.parser.PreflightParser;
 import org.junit.Test;
 
 import java.io.File;
@@ -88,6 +92,46 @@ public class PDFBoxTest {
     }
 
     @Test
-    public void validatePdfA() {
+    public void validatePdfA() throws IOException {
+        ValidationResult result = null;
+
+        String testPath = getClass().getClassLoader().getResource("files/pdf/filename.pdf").getFile();
+        File testFile = new File(testPath);
+        PreflightParser parser = new PreflightParser(testFile);
+
+        try {
+            /* Parse the PDF file with PreflightParser that inherits from the NonSequentialParser.
+             * Some additional controls are present to check a set of PDF/A requirements.
+             * (Stream length consistency, EOL after some Keyword...)
+             */
+            parser.parse();
+
+            /* Once the syntax validation is done,
+             * the parser can provide a PreflightDocument
+             * (that inherits from PDDocument)
+             * This document process the end of PDF/A validation.
+             */
+            PreflightDocument document = parser.getPreflightDocument();
+            document.validate();
+
+            // Get validation result
+            result = document.getResult();
+            document.close();
+        } catch (SyntaxValidationException e) {
+            /* the parse method can throw a SyntaxValidationException
+             * if the PDF file can't be parsed.
+             * In this case, the exception contains an instance of ValidationResult
+             */
+            result = e.getResult();
+        }
+
+        // display validation result
+        if (result.isValid()) {
+            System.out.println("The file " + testFile + " is a valid PDF/A-1b file");
+        } else {
+            System.out.println("The file" + testFile + " is not valid, error(s) :");
+            result.getErrorsList()
+                    .forEach(error -> System.out.println(error.getErrorCode() + " : " + error.getDetails()));
+        }
     }
 }
