@@ -3,11 +3,14 @@ package ua.challenge.pdf.pdfbox;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDPage;
 import org.apache.pdfbox.pdmodel.PDPageContentStream;
+import org.apache.pdfbox.pdmodel.encryption.AccessPermission;
+import org.apache.pdfbox.pdmodel.encryption.StandardProtectionPolicy;
 import org.apache.pdfbox.pdmodel.font.PDCIDFontType0;
 import org.apache.pdfbox.pdmodel.font.PDFont;
 import org.apache.pdfbox.pdmodel.font.PDType1Font;
 import org.junit.Test;
 
+import java.io.File;
 import java.io.IOException;
 
 /**
@@ -56,5 +59,35 @@ public class PDFBoxTest {
         // Save the results and ensure that the document is properly closed:
         document.save("Hello World.pdf");
         document.close();
+    }
+
+    @Test
+    public void createEncryptedPdf() throws IOException {
+        String testPath = getClass().getClassLoader().getResource("files/pdf/filename.pdf").getFile();
+        File testFile = new File(testPath);
+        PDDocument document = PDDocument.load(testFile);
+
+        // Define the length of the encryption key.
+        // Possible values are 40 or 128 (256 will be available in PDFBox 2.0).
+        int keyLength = 128;
+
+        AccessPermission permissions = new AccessPermission();
+
+        // Disable printing, everything else is allowed
+        permissions.setCanPrint(false);
+
+        // Owner password (to open the file with all permissions) is "12345"
+        // User password (to open the file but with restricted permissions, is empty here)
+        StandardProtectionPolicy protectionPolicy = new StandardProtectionPolicy("12345", "", permissions);
+        protectionPolicy.setEncryptionKeyLength(keyLength);
+        protectionPolicy.setPermissions(permissions);
+        document.protect(protectionPolicy);
+
+        document.save("filename-encrypted.pdf");
+        document.close();
+    }
+
+    @Test
+    public void validatePdfA() {
     }
 }
