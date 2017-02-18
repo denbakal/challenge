@@ -8,6 +8,7 @@ import org.apache.pdfbox.pdmodel.encryption.StandardProtectionPolicy;
 import org.apache.pdfbox.pdmodel.font.PDCIDFontType0;
 import org.apache.pdfbox.pdmodel.font.PDFont;
 import org.apache.pdfbox.pdmodel.font.PDType1Font;
+import org.apache.pdfbox.preflight.Format;
 import org.apache.pdfbox.preflight.PreflightDocument;
 import org.apache.pdfbox.preflight.ValidationResult;
 import org.apache.pdfbox.preflight.exception.SyntaxValidationException;
@@ -92,8 +93,18 @@ public class PDFBoxTest {
     }
 
     @Test
-    public void validatePdfA() throws IOException {
-        ValidationResult result = null;
+    public void validatePdfA1b() throws IOException { // PDF/A-1b validation
+        validatePdfFormat(true);
+    }
+
+    @Test
+    public void validatePdfA1a() throws IOException { // PDF/A-1a validation
+        validatePdfFormat(false);
+    }
+
+    private void validatePdfFormat(boolean isFormatB) throws IOException {
+        ValidationResult result;
+        String currentFormat = null;
 
         String testPath = getClass().getClassLoader().getResource("files/pdf/filename.pdf").getFile();
         File testFile = new File(testPath);
@@ -104,7 +115,14 @@ public class PDFBoxTest {
              * Some additional controls are present to check a set of PDF/A requirements.
              * (Stream length consistency, EOL after some Keyword...)
              */
-            parser.parse();
+
+            if (isFormatB) {
+                parser.parse();
+                currentFormat = "PDF/A-1b";
+            } else {
+                parser.parse(Format.PDF_A1A);
+                currentFormat = "PDF/A-1a";
+            }
 
             /* Once the syntax validation is done,
              * the parser can provide a PreflightDocument
@@ -127,7 +145,7 @@ public class PDFBoxTest {
 
         // display validation result
         if (result.isValid()) {
-            System.out.println("The file " + testFile + " is a valid PDF/A-1b file");
+            System.out.println("The file " + testFile + " is a valid " + currentFormat + " file");
         } else {
             System.out.println("The file" + testFile + " is not valid, error(s) :");
             result.getErrorsList()
