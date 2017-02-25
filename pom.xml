@@ -252,6 +252,7 @@
             <version>3.5</version>
         </dependency>
 
+        <!-- MOM (JMS & RabbitMQ) -->
         <dependency>
             <groupId>org.springframework.amqp</groupId>
             <artifactId>spring-rabbit</artifactId>
@@ -285,6 +286,28 @@
             <version>5.5.10</version>
         </dependency>
 
+        <!-- ORM (Hibernate & Spring Data)  -->
+
+        <dependency>
+            <groupId>com.mysema.querydsl</groupId>
+            <artifactId>querydsl-apt</artifactId>
+            <version>3.7.4</version>
+        </dependency>
+        <dependency>
+            <groupId>com.mysema.querydsl</groupId>
+            <artifactId>querydsl-core</artifactId>
+            <version>3.7.4</version>
+        </dependency>
+        <dependency>
+            <groupId>com.mysema.querydsl</groupId>
+            <artifactId>querydsl-jpa</artifactId>
+            <version>3.7.4</version>
+        </dependency>
+        <!--<dependency>
+            <groupId>com.mysema.querydsl</groupId>
+            <artifactId>querydsl-hql</artifactId>
+            <version>1.9.7</version>
+        </dependency>-->
 
 
     </dependencies>
@@ -308,6 +331,26 @@
                         <configuration>
                             <addOutputDirectory>false</addOutputDirectory>
                             <sourceDirectory>src/main/java</sourceDirectory>
+                            <skip>true</skip>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <plugin>
+                <groupId>com.mysema.maven</groupId>
+                <artifactId>maven-apt-plugin</artifactId>
+                <version>1.0.4</version>
+                <executions>
+                    <execution>
+                        <phase>generate-sources</phase>
+                        <goals>
+                            <goal>process</goal>
+                        </goals>
+                        <configuration>
+                            <outputDirectory>target/generated-sources</outputDirectory>
+                            <!--<processor>com.mysema.query.apt.hibernate.HibernateAnnotationProcessor</processor>-->
+                            <processor>com.mysema.query.apt.jpa.JPAAnnotationProcessor</processor>
                         </configuration>
                     </execution>
                 </executions>

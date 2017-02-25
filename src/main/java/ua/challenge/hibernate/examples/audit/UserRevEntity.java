@@ -1,5 +1,6 @@
 package ua.challenge.hibernate.examples.audit;
 
+import com.mysema.query.annotations.QueryExclude;
 import org.hibernate.envers.DefaultRevisionEntity;
 import org.hibernate.envers.RevisionEntity;
 
@@ -10,6 +11,7 @@ import javax.persistence.Entity;
  */
 @Entity
 @RevisionEntity(UserRevisionListener.class)
+@QueryExclude
 public class UserRevEntity extends DefaultRevisionEntity {
     private String userName;
 
