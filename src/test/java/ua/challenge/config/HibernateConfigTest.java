@@ -40,6 +40,8 @@ public class HibernateConfigTest {
         properties.setProperty("hibernate.show_sql", "true");
         properties.setProperty("hibernate.format_sql", "true");
         properties.setProperty("hibernate.hbm2ddl.auto", "create");
+        properties.setProperty("hibernate.search.default.directory_provider", "filesystem");
+        properties.setProperty("hibernate.search.default.indexBase", "C:\\lucene\\indexes");
         return properties;
     }
 
