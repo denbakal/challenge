@@ -21,7 +21,6 @@ import java.util.Properties;
  */
 @Configuration
 @EnableTransactionManagement
-@ComponentScan("ua.challenge")
 public class HibernateConfigTest {
     @Bean
     public DataSource dataSource() {

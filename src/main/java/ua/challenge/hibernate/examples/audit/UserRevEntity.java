@@ -1,6 +1,6 @@
 package ua.challenge.hibernate.examples.audit;
 
-import com.mysema.query.annotations.QueryExclude;
+import com.querydsl.core.annotations.QueryExclude;
 import org.hibernate.envers.DefaultRevisionEntity;
 import org.hibernate.envers.RevisionEntity;
 
