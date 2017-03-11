@@ -6,6 +6,7 @@ import com.querydsl.core.Tuple;
 import com.querydsl.jpa.JPAExpressions;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import lombok.Data;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.SpringApplicationConfiguration;
@@ -304,5 +305,21 @@ public class QueryDslTest {
         System.out.println(result);
         assertThat(result).isNotNull();
         assertThat(result.getFirstName()).isEqualTo("Fred");
+    }
+
+    /* Tuple projection */
+    @Test
+    @Transactional
+    @DatabaseSetup("/data/persons.xml")
+    public void fetchWithTuple() {
+        QPerson person = QPerson.person;
+        JPAQueryFactory queryFactory = new JPAQueryFactory(entityManager);
+
+        List<Tuple> persons = queryFactory.select(person.solutations, person.firstName, person.lastName)
+                .from(person)
+                .fetch();
+
+        persons.forEach(System.out::println);
+        assertThat(persons.size()).isEqualTo(3);
     }
 }
