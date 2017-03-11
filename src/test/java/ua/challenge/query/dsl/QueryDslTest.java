@@ -182,4 +182,20 @@ public class QueryDslTest {
         persons.forEach(System.out::println);
         assertThat(persons.size()).isEqualTo(3);
     }
+
+    /* Ordering */
+    @Test
+    @Transactional
+    @DatabaseSetup("/data/persons.xml")
+    public void fetchOrderBy() {
+        QPerson person = QPerson.person;
+        JPAQueryFactory queryFactory = new JPAQueryFactory(entityManager);
+
+        List<Person> persons = queryFactory.selectFrom(person)
+                .orderBy(person.firstName.asc(), person.lastName.desc())
+                .fetch();
+
+        persons.forEach(System.out::println);
+        assertThat(persons.size()).isEqualTo(3);
+    }
 }
