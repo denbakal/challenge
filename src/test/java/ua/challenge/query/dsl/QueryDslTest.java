@@ -2,6 +2,7 @@ package ua.challenge.query.dsl;
 
 import com.github.springtestdbunit.DbUnitTestExecutionListener;
 import com.github.springtestdbunit.annotation.DatabaseSetup;
+import com.querydsl.core.Tuple;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import org.junit.Test;
@@ -197,5 +198,39 @@ public class QueryDslTest {
 
         persons.forEach(System.out::println);
         assertThat(persons.size()).isEqualTo(3);
+    }
+
+    /* Grouping */
+    @Test
+    @Transactional
+    @DatabaseSetup("/data/persons.xml")
+    public void fetchGroupByTest() {
+        QPerson person = QPerson.person;
+        JPAQueryFactory queryFactory = new JPAQueryFactory(entityManager);
+
+        List<String> result = queryFactory.select(person.solutations)
+                .from(person)
+                .groupBy(person.solutations)
+                .fetch();
+
+        result.forEach(System.out::println);
+        assertThat(result.size()).isEqualTo(1);
+    }
+
+    @Test
+    @Transactional
+    @DatabaseSetup("/data/persons.xml")
+    public void fetchGroupByWithHavingTest() {
+        QPerson person = QPerson.person;
+        JPAQueryFactory queryFactory = new JPAQueryFactory(entityManager);
+
+        List<Tuple> result = queryFactory.select(person.solutations, person.firstName)
+                .from(person)
+                .groupBy(person.solutations, person.firstName)
+                .having(person.firstName.eq("Mike"))
+                .fetch();
+
+        result.forEach(System.out::println);
+        assertThat(result.size()).isEqualTo(1);
     }
 }
