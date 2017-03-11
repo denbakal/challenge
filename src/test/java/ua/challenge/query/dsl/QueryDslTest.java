@@ -233,4 +233,30 @@ public class QueryDslTest {
         result.forEach(System.out::println);
         assertThat(result.size()).isEqualTo(1);
     }
+
+    /* Delete clauses */
+    @Test
+    @Transactional
+    @DatabaseSetup("/data/persons.xml")
+    public void deleteAllTest() {
+        QPerson person = QPerson.person;
+        JPAQueryFactory queryFactory = new JPAQueryFactory(entityManager);
+
+        long result = queryFactory.delete(person).execute();
+        assertThat(result).isEqualTo(3);
+    }
+
+    @Test
+    @Transactional
+    @DatabaseSetup("/data/persons.xml")
+    public void deleteWithWhereTest() {
+        QPerson person = QPerson.person;
+        JPAQueryFactory queryFactory = new JPAQueryFactory(entityManager);
+
+        long result = queryFactory.delete(person)
+                .where(person.firstName.eq("Mike"))
+                .execute();
+
+        assertThat(result).isEqualTo(1);
+    }
 }
