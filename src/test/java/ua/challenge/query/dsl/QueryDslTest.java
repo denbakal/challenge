@@ -259,4 +259,28 @@ public class QueryDslTest {
 
         assertThat(result).isEqualTo(1);
     }
+
+    /* Update clauses */
+    @Test
+    @Transactional
+    @DatabaseSetup("/data/persons.xml")
+    public void updateTest() {
+        QPerson person = QPerson.person;
+        JPAQueryFactory queryFactory = new JPAQueryFactory(entityManager);
+
+        long result = queryFactory.update(person)
+                .where(person.firstName.eq("Mike"))
+                .set(person.firstName, "Bob")
+                .execute();
+
+        assertThat(result).isEqualTo(1);
+
+        Person updatedPerson = queryFactory.selectFrom(person)
+                .where(person.firstName.eq("Bob"))
+                .fetchOne();
+
+        System.out.println(updatedPerson);
+        assertThat(updatedPerson).isNotNull();
+        assertThat(updatedPerson.getFirstName()).isEqualTo("Bob");
+    }
 }
