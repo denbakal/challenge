@@ -14,6 +14,7 @@ import org.springframework.test.context.support.DirtiesContextTestExecutionListe
 import org.springframework.test.context.transaction.TransactionalTestExecutionListener;
 import org.springframework.transaction.annotation.Transactional;
 import ua.challenge.config.HibernateConfigTest;
+import ua.challenge.hibernate.examples.querydsl.entity.QEducation;
 import ua.challenge.hibernate.examples.transactions.entity.Person;
 import ua.challenge.hibernate.examples.transactions.entity.QPerson;
 
@@ -50,7 +51,7 @@ public class QueryDslTest {
         JPAQuery query = new JPAQuery(entityManager);
         long count = query.from(person).fetchCount();
         System.out.println("Count of persons: " + count);
-        assertThat(count).isEqualTo(2L);
+        assertThat(count).isEqualTo(3L);
     }
 
     @Test
@@ -117,5 +118,68 @@ public class QueryDslTest {
         assertThat(persons.size()).isEqualTo(2);
     }
 
+    /* Using joins */
+    @Test
+    @Transactional
+    @DatabaseSetup("/data/persons.xml")
+    public void fetchInnerJoinTest() {
+        QPerson person = QPerson.person;
+        JPAQueryFactory queryFactory = new JPAQueryFactory(entityManager);
 
+        List<Person> persons = queryFactory.selectFrom(person)
+                .innerJoin(person.education)
+                .fetch();
+
+        persons.forEach(System.out::println);
+        assertThat(persons.size()).isEqualTo(2);
+    }
+
+    @Test
+    @Transactional
+    @DatabaseSetup("/data/persons.xml")
+    public void fetchLeftJoinTest() {
+        QPerson person = QPerson.person;
+        JPAQueryFactory queryFactory = new JPAQueryFactory(entityManager);
+
+        List<Person> persons = queryFactory.selectFrom(person)
+                .leftJoin(person.education)
+                .fetch();
+
+        persons.forEach(System.out::println);
+        assertThat(persons.size()).isEqualTo(3);
+    }
+
+    @Test
+    @Transactional
+    @DatabaseSetup("/data/persons.xml")
+    public void fetchLeftJoinWithAliasTest() {
+        QPerson person = QPerson.person;
+        QEducation education = QEducation.education;
+        JPAQueryFactory queryFactory = new JPAQueryFactory(entityManager);
+
+        List<Person> persons = queryFactory.selectFrom(person)
+                .leftJoin(person.education, education)
+                .on(education.name.eq("middle"))
+                .fetch();
+
+        persons.forEach(System.out::println);
+        assertThat(persons.size()).isEqualTo(3);
+    }
+
+    @Test
+    @Transactional
+    @DatabaseSetup("/data/persons.xml")
+    public void fetchJoinTest() {
+        QPerson person = QPerson.person;
+        QEducation education = QEducation.education;
+        JPAQueryFactory queryFactory = new JPAQueryFactory(entityManager);
+
+        List<Person> persons = queryFactory.selectFrom(person)
+                .leftJoin(person.education, education)
+                .fetchJoin()
+                .fetch();
+
+        persons.forEach(System.out::println);
+        assertThat(persons.size()).isEqualTo(3);
+    }
 }

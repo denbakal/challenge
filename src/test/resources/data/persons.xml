@@ -1,5 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <dataset>
-    <persons id="32" solutations="Mr" firstName="Phillip" lastName="Webb"/>
-    <persons id="33" solutations="Mr" firstName="Fred" lastName="Bloggs"/>
+    <educations id="1" name="high" />
+    <educations id="2" name="middle" />
+    <educations id="3" name="empty" />
+
+    <persons id="32" solutations="Mr" firstName="Phillip" lastName="Webb" education_id="1"/>
+    <persons id="33" solutations="Mr" firstName="Fred" lastName="Bloggs" education_id="2"/>
+    <persons id="34" solutations="Mr" firstName="Mike" lastName="Roony"/>
 </dataset>

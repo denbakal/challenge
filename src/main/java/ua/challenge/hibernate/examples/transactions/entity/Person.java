@@ -1,5 +1,11 @@
 package ua.challenge.hibernate.examples.transactions.entity;
 
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
+import ua.challenge.hibernate.examples.querydsl.entity.Education;
+import ua.challenge.hibernate.examples.relationship.one.to.one.unidirectional.entity.Address;
+
 import javax.persistence.*;
 
 /**
@@ -7,6 +13,9 @@ import javax.persistence.*;
  */
 @Entity
 @Table(name = "persons")
+@Getter
+@Setter
+@ToString
 public class Person {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -18,39 +27,16 @@ public class Person {
 
     private String lastName;
 
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "address_id")
+    private Address address;
+
+    @OneToOne(cascade = CascadeType.ALL)
+//    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinColumn(name = "education_id")
+    private Education education;
+
     public Person() {
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getSolutations() {
-        return solutations;
-    }
-
-    public void setSolutations(String solutations) {
-        this.solutations = solutations;
-    }
-
-    public String getFirstName() {
-        return firstName;
-    }
-
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-
-    public String getLastName() {
-        return lastName;
-    }
-
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
     }
 
     @Override
@@ -74,15 +60,5 @@ public class Person {
         result = 31 * result + (firstName != null ? firstName.hashCode() : 0);
         result = 31 * result + (lastName != null ? lastName.hashCode() : 0);
         return result;
-    }
-
-    @Override
-    public String toString() {
-        return "Person{" +
-                "id=" + id +
-                ", solutations='" + solutations + '\'' +
-                ", firstName='" + firstName + '\'' +
-                ", lastName='" + lastName + '\'' +
-                '}';
     }
 }
