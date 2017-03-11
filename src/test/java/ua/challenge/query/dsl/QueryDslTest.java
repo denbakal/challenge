@@ -3,6 +3,7 @@ package ua.challenge.query.dsl;
 import com.github.springtestdbunit.DbUnitTestExecutionListener;
 import com.github.springtestdbunit.annotation.DatabaseSetup;
 import com.querydsl.core.Tuple;
+import com.querydsl.jpa.JPAExpressions;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import org.junit.Test;
@@ -282,5 +283,26 @@ public class QueryDslTest {
         System.out.println(updatedPerson);
         assertThat(updatedPerson).isNotNull();
         assertThat(updatedPerson.getFirstName()).isEqualTo("Bob");
+    }
+
+    /* Subqueries */
+    @Test
+    @Transactional
+    @DatabaseSetup("/data/persons.xml")
+    public void fetchWithSubqueriesTest() {
+        QPerson person = QPerson.person;
+        QEducation education = QEducation.education;
+        JPAQueryFactory queryFactory = new JPAQueryFactory(entityManager);
+
+        Person result = queryFactory.selectFrom(person)
+                .where(person.education.id.eq(
+                        JPAExpressions.select(education.id).from(education)
+                            .where(education.name.eq("middle"))
+                ))
+                .fetchOne();
+
+        System.out.println(result);
+        assertThat(result).isNotNull();
+        assertThat(result.getFirstName()).isEqualTo("Fred");
     }
 }
