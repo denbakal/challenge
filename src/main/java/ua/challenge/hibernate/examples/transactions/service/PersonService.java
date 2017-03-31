@@ -1,6 +1,5 @@
 package ua.challenge.hibernate.examples.transactions.service;
 
-import org.hibernate.engine.transaction.spi.LocalStatus;
 import ua.challenge.hibernate.examples.transactions.entity.Person;
 
 /**

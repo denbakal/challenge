@@ -2,24 +2,20 @@ package ua.challenge.db.entity;
 
 import lombok.Getter;
 import lombok.Setter;
-import lombok.ToString;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 /**
  * Created by d.bakal on 30.10.2016.
  */
 @Entity
-@Table(name = "addresses")
+@Table(name = "user_departments")
 @Getter
 @Setter
-@ToString
-public class Address {
+public class UserDepartment {
     @Id
     private Long id;
-    private City city;
-    private String street;
+    private String name;
 }

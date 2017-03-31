@@ -4,20 +4,22 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 /**
  * Created by d.bakal on 30.10.2016.
  */
 @Entity
-@Table(name = "cities")
+@Table(name = "user_addresses")
 @Getter
 @Setter
 @ToString
-public class City {
+public class UserAddress {
     @Id
     private Long id;
-    private String name;
+
+    @OneToOne
+    private UserCity city;
+
+    private String street;
 }

@@ -5,8 +5,8 @@ import org.junit.Before;
 import org.junit.Test;
 import org.modelmapper.*;
 import org.modelmapper.convention.MatchingStrategies;
-import ua.challenge.db.entity.Address;
-import ua.challenge.db.entity.City;
+import ua.challenge.db.entity.UserAddress;
+import ua.challenge.db.entity.UserCity;
 import ua.challenge.db.entity.User;
 import ua.challenge.dto.AddressDTO;
 import ua.challenge.dto.UserDTO;
@@ -30,11 +30,11 @@ public class ModelMapperTest {
 
     @Test
     public void testMapping() {
-        City city = new City();
+        UserCity city = new UserCity();
         city.setId(2L);
         city.setName("Kiev");
 
-        Address address = new Address();
+        UserAddress address = new UserAddress();
         address.setId(1L);
         address.setCity(city);
         address.setStreet("Main street");
@@ -140,11 +140,11 @@ public class ModelMapperTest {
             }
         };
 
-        City city = new City();
+        UserCity city = new UserCity();
         city.setId(2L);
         city.setName("Kiev");
 
-        Address address = new Address();
+        UserAddress address = new UserAddress();
         address.setId(1L);
         address.setCity(city);
         address.setStreet("Main street");

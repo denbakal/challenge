@@ -27,7 +27,9 @@ public class User {
     @Temporal(value = TemporalType.DATE)
     private Date birthDay;
 
-    private Address address;
+    @OneToOne
+    private UserAddress address;
 
-    private List<Department> departments;
+    @OneToMany
+    private List<UserDepartment> departments;
 }

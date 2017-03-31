@@ -30,7 +30,7 @@ public class PersonDAOImpl implements PersonDAO {
     @Override
     public void save(Person person) {
         Transaction transaction = sessionFactory.getCurrentSession().getTransaction();
-        logger.info("Transaction for method save(): " + transaction.getLocalStatus());
+        logger.info("Transaction for method save(): " + transaction.getStatus());
         sessionFactory.getCurrentSession().save(person);
     }
 
@@ -38,7 +38,7 @@ public class PersonDAOImpl implements PersonDAO {
     public void setCustomPerson(Person person) {
         person.setFirstName(">> --- <<");
         Transaction transaction = sessionFactory.getCurrentSession().getTransaction();
-        logger.info("Transaction: " + transaction.getLocalStatus());
+        logger.info("Transaction: " + transaction.getStatus());
         sessionFactory.getCurrentSession().save(person);
     }
 }
