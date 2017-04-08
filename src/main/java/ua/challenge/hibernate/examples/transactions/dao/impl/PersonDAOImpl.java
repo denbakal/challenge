@@ -1,6 +1,6 @@
 package ua.challenge.hibernate.examples.transactions.dao.impl;
 
-import org.apache.log4j.Logger;
+import lombok.extern.log4j.Log4j2;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,8 +16,8 @@ import java.util.List;
  * Created by d.bakal on 7/23/2016.
  */
 @Repository
+@Log4j2
 public class PersonDAOImpl implements PersonDAO {
-    private static final Logger logger = Logger.getLogger(PersonDAOImpl.class);
 
     @Autowired
     private SessionFactory sessionFactory;
@@ -30,7 +30,7 @@ public class PersonDAOImpl implements PersonDAO {
     @Override
     public void save(Person person) {
         Transaction transaction = sessionFactory.getCurrentSession().getTransaction();
-        logger.info("Transaction for method save(): " + transaction.getStatus());
+        log.info("Transaction for method save(): " + transaction.getStatus());
         sessionFactory.getCurrentSession().save(person);
     }
 
@@ -38,7 +38,7 @@ public class PersonDAOImpl implements PersonDAO {
     public void setCustomPerson(Person person) {
         person.setFirstName(">> --- <<");
         Transaction transaction = sessionFactory.getCurrentSession().getTransaction();
-        logger.info("Transaction: " + transaction.getStatus());
+        log.info("Transaction: " + transaction.getStatus());
         sessionFactory.getCurrentSession().save(person);
     }
 }
