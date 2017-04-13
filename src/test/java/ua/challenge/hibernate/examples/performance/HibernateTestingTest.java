@@ -93,6 +93,33 @@ public class HibernateTestingTest extends JPAUnitTestCase {
         });
     }
 
+    @Test
+    public void detachTest() {
+        log.debug("Hibernate testing");
+        doInJPA(this::entityManagerFactory, entityManager -> {
+            Phone phone1 = new Phone( "123-456-7890" );
+            Phone phone2 = new Phone( "321-654-0987" );
+
+            Person person = new Person();
+            person.setFirstName("User");
+            person.setLastName("LastUser");
+            person.setPhones(Arrays.asList(phone1, phone2));
+
+            entityManager.persist(person);
+            entityManager.detach(person);
+
+            /* Get a list of managed Entity instances in a persistence context */
+            SessionImplementor implementor = entityManager.unwrap(SessionImplementor.class);
+            org.hibernate.engine.spi.PersistenceContext context = implementor.getPersistenceContext();
+            Map.Entry<Object,org.hibernate.engine.spi.EntityEntry>[] entityEntries = context.reentrantSafeEntityEntries();
+            for (Map.Entry<Object, EntityEntry> entityEntry : entityEntries) {
+                log.debug("entityEntry = " + entityEntry.getKey() + " - " + entityEntry.getValue());
+            }
+
+            assertThat(entityEntries.length).isEqualTo(0);
+        });
+    }
+
     @Override
     protected Class<?>[] entities() {
         return new Class<?>[] {
