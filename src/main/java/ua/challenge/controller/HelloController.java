@@ -1,8 +1,8 @@
 package ua.challenge.controller;
 
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 /**
  * Created by d.bakal on 3/12/2016.
@@ -24,5 +24,11 @@ public class HelloController {
     @RequestMapping(value = "/secure", method = RequestMethod.GET)
     public String secure() {
         return "UserName: ";
+    }
+
+    @RequestMapping(value = "/ids", method = RequestMethod.GET)
+    public @ResponseBody String getIds(@RequestBody List<Long> ids) {
+        ids.forEach(System.out::println);
+        return "Ok";
     }
 }
