@@ -1,14 +1,18 @@
 package ua.challenge.hibernate.examples.jpa;
 
-import org.hibernate.Interceptor;
+import org.hibernate.*;
 import org.hibernate.cfg.AvailableSettings;
 import org.hibernate.jpa.boot.internal.EntityManagerFactoryBuilderImpl;
 import org.hibernate.jpa.boot.internal.PersistenceUnitInfoDescriptor;
+import org.hibernate.testing.transaction.TransactionUtil;
 import org.junit.Before;
 
+import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
+import javax.persistence.EntityTransaction;
 import javax.persistence.spi.PersistenceUnitInfo;
 import java.util.*;
+import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
 /**
@@ -17,16 +21,22 @@ import java.util.stream.Collectors;
 public abstract class JPAUnitTestCase {
     @Before
     public void init() {
+        buildEntityManagerFactory();
     }
 
-    protected EntityManagerFactory entityManagerFactory() {
+    private EntityManagerFactory entityManagerFactory;
+
+    protected void buildEntityManagerFactory() {
         PersistenceUnitInfo persistenceUnitInfo = persistenceUnitInfo(getClass().getSimpleName());
         Map<String, Object> configuration = new HashMap<>();
         configuration.put(AvailableSettings.INTERCEPTOR, interceptor());
 
-        return new EntityManagerFactoryBuilderImpl(
-                    new PersistenceUnitInfoDescriptor(persistenceUnitInfo), configuration
-            ).build();
+        entityManagerFactory = new EntityManagerFactoryBuilderImpl(
+                    new PersistenceUnitInfoDescriptor(persistenceUnitInfo), configuration).build();
+    }
+
+    public SessionFactory sessionFactory() {
+        return entityManagerFactory.unwrap(SessionFactory.class);
     }
 
     private PersistenceUnitInfo persistenceUnitInfo(String name) {
@@ -50,12 +60,14 @@ public abstract class JPAUnitTestCase {
         }*/
 
         properties.put("hibernate.dialect", "org.hibernate.dialect.PostgreSQL82Dialect");
+//        properties.put("hibernate.hbm2ddl.auto", "validate");
         properties.put("hibernate.hbm2ddl.auto", "create-drop");
         properties.put("hibernate.show_sql", "true");
         properties.put("hibernate.format_sql", "true");
-        properties.put("hibernate.format_sql", "true");
         properties.put("hibernate.ejb.metamodel.population", "disabled");
         properties.put("hibernate.generate_statistics", Boolean.TRUE.toString());
+
+        properties.put("hibernate.jdbc.fetch_size", 20);
 
         // datasource
         properties.put("hibernate.connection.driver_class", "org.postgresql.Driver");
@@ -68,5 +80,58 @@ public abstract class JPAUnitTestCase {
 
     private Interceptor interceptor() {
         return null;
+    }
+
+    protected void doInJPA(TransactionUtil.JPATransactionVoidFunction function) {
+        EntityManager entityManager = null;
+        EntityTransaction txn = null;
+        try {
+            entityManager = entityManagerFactory.createEntityManager();
+            function.beforeTransactionCompletion();
+            txn = entityManager.getTransaction();
+            txn.begin();
+            function.accept(entityManager);
+            txn.commit();
+        } catch (Throwable e) {
+            if ( txn != null && txn.isActive()) txn.rollback();
+            throw e;
+        } finally {
+            function.afterTransactionCompletion();
+            if (entityManager != null) {
+                entityManager.close();
+            }
+        }
+    }
+
+    protected void doInHibernateStateless(HibernateTransactionConsumer callable) {
+        StatelessSession session = null;
+        Transaction txn = null;
+        try {
+            session = sessionFactory().openStatelessSession();
+            callable.beforeTransactionCompletion();
+            txn = session.beginTransaction();
+
+            callable.accept(session);
+            txn.commit();
+        } catch (Throwable e) {
+            if ( txn != null ) txn.rollback();
+            throw e;
+        } finally {
+            callable.afterTransactionCompletion();
+            if (session != null) {
+                session.close();
+            }
+        }
+    }
+
+    @FunctionalInterface
+    protected interface HibernateTransactionConsumer extends Consumer<StatelessSession> {
+        default void beforeTransactionCompletion() {
+
+        }
+
+        default void afterTransactionCompletion() {
+
+        }
     }
 }

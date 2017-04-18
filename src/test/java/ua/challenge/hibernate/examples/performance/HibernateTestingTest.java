@@ -28,7 +28,7 @@ public class HibernateTestingTest extends JPAUnitTestCase {
     @Test(expected = ClassCastException.class)
     public void failedTest() {
         log.debug("Hibernate testing");
-        doInJPA(this::entityManagerFactory, entityManager -> {
+        doInJPA(entityManager -> {
             Phone phone1 = new Phone( "123-456-7890" );
             Phone phone2 = new Phone( "321-654-0987" );
 
@@ -49,7 +49,7 @@ public class HibernateTestingTest extends JPAUnitTestCase {
     @Test
     public void test() {
         log.debug("Hibernate testing");
-        doInJPA(this::entityManagerFactory, entityManager -> {
+        doInJPA(entityManager -> {
             Phone phone1 = new Phone( "123-456-7890" );
             Phone phone2 = new Phone( "321-654-0987" );
 
@@ -70,7 +70,7 @@ public class HibernateTestingTest extends JPAUnitTestCase {
     @Test
     public void getListOfManagedEntityInstancesFromContextTest() {
         log.debug("Hibernate testing");
-        doInJPA(this::entityManagerFactory, entityManager -> {
+        doInJPA(entityManager -> {
             Phone phone1 = new Phone( "123-456-7890" );
             Phone phone2 = new Phone( "321-654-0987" );
 
@@ -96,7 +96,7 @@ public class HibernateTestingTest extends JPAUnitTestCase {
     @Test
     public void detachTest() {
         log.debug("Hibernate testing");
-        doInJPA(this::entityManagerFactory, entityManager -> {
+        doInJPA(entityManager -> {
             Phone phone1 = new Phone( "123-456-7890" );
             Phone phone2 = new Phone( "321-654-0987" );
 
