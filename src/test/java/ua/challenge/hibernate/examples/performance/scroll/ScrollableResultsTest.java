@@ -16,6 +16,7 @@ import java.time.Instant;
 import java.util.List;
 import java.util.Map;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.hibernate.testing.transaction.TransactionUtil.doInHibernate;
 
 /**
@@ -40,6 +41,25 @@ public class ScrollableResultsTest extends JPAUnitTestCase {
 
         Instant end = Instant.now();
         System.out.println(Duration.between(start, end).toString().substring(2));
+    }
+
+    @Test
+    @SneakyThrows
+    public void getTotalCountForScrollableResult() {
+        doInHibernate(this::sessionFactory, session -> {
+
+            ScrollableResults results = session.createNativeQuery("select * from persons")
+                    .setReadOnly(true)
+                    .scroll();
+
+            results.next();
+            int totalCount = results.getRowNumber() + 1;
+            assertThat(totalCount).isEqualTo(1);
+
+            results.last();
+            totalCount = results.getRowNumber() + 1;
+            assertThat(totalCount).isEqualTo(100000);
+        });
     }
 
     /*1*/
