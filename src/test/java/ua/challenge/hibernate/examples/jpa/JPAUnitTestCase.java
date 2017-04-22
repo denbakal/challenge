@@ -6,11 +6,15 @@ import org.hibernate.jpa.boot.internal.EntityManagerFactoryBuilderImpl;
 import org.hibernate.jpa.boot.internal.PersistenceUnitInfoDescriptor;
 import org.hibernate.testing.transaction.TransactionUtil;
 import org.junit.Before;
+import org.springframework.jdbc.datasource.DriverManagerDataSource;
+import ua.challenge.core.datasource.latency.LatencyDatasource;
+import ua.challenge.core.datasource.latency.ThreadSleepLatencySimulator;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
 import javax.persistence.spi.PersistenceUnitInfo;
+import javax.sql.DataSource;
 import java.util.*;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
@@ -54,10 +58,10 @@ public abstract class JPAUnitTestCase {
     private Properties properties() {
         Properties properties = new Properties();
         //data source settings
-        /*DataSource dataSource = newDataSource();
+        DataSource dataSource = newDataSource();
         if (dataSource != null) {
             properties.put("hibernate.connection.datasource", dataSource);
-        }*/
+        }
 
         properties.put("hibernate.dialect", "org.hibernate.dialect.PostgreSQL82Dialect");
 //        properties.put("hibernate.hbm2ddl.auto", "validate");
@@ -70,12 +74,24 @@ public abstract class JPAUnitTestCase {
         properties.put("hibernate.jdbc.fetch_size", 20);
 
         // datasource
-        properties.put("hibernate.connection.driver_class", "org.postgresql.Driver");
-        properties.put("hibernate.connection.url", "jdbc:postgresql://localhost:5432/challenge_test");
-        properties.put("hibernate.connection.username", "postgres");
-        properties.put("hibernate.connection.password", "root");
+//        properties.put("hibernate.connection.driver_class", "org.postgresql.Driver");
+//        properties.put("hibernate.connection.url", "jdbc:postgresql://localhost:5432/challenge_test");
+//        properties.put("hibernate.connection.username", "postgres");
+//        properties.put("hibernate.connection.password", "root");
 
         return properties;
+    }
+
+    private DataSource newDataSource() {
+        DriverManagerDataSource datasource = new DriverManagerDataSource();
+        datasource.setDriverClassName("org.postgresql.Driver");
+        datasource.setUrl("jdbc:postgresql://localhost:5432/challenge_test");
+        datasource.setUsername("postgres");
+        datasource.setPassword("root");
+
+        ThreadSleepLatencySimulator simulator = new ThreadSleepLatencySimulator(10L);
+
+        return new LatencyDatasource(datasource, simulator);
     }
 
     private Interceptor interceptor() {
