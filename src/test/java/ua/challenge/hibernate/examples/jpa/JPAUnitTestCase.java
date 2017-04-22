@@ -1,5 +1,6 @@
 package ua.challenge.hibernate.examples.jpa;
 
+import com.p6spy.engine.spy.P6DataSource;
 import org.hibernate.*;
 import org.hibernate.cfg.AvailableSettings;
 import org.hibernate.jpa.boot.internal.EntityManagerFactoryBuilderImpl;
@@ -66,7 +67,7 @@ public abstract class JPAUnitTestCase {
         properties.put("hibernate.dialect", "org.hibernate.dialect.PostgreSQL82Dialect");
 //        properties.put("hibernate.hbm2ddl.auto", "validate");
         properties.put("hibernate.hbm2ddl.auto", "create-drop");
-        properties.put("hibernate.show_sql", "true");
+        properties.put("hibernate.show_sql", "false");
         properties.put("hibernate.format_sql", "true");
         properties.put("hibernate.ejb.metamodel.population", "disabled");
         properties.put("hibernate.generate_statistics", Boolean.TRUE.toString());
@@ -91,7 +92,8 @@ public abstract class JPAUnitTestCase {
 
         ThreadSleepLatencySimulator simulator = new ThreadSleepLatencySimulator(10L);
 
-        return new LatencyDatasource(datasource, simulator);
+        return new P6DataSource(
+                new LatencyDatasource(datasource, simulator));
     }
 
     private Interceptor interceptor() {
