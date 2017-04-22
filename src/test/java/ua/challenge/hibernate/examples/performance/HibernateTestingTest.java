@@ -18,6 +18,8 @@ import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hibernate.testing.transaction.TransactionUtil.doInJPA;
+import static ua.challenge.core.sql.tracker.AssertSqlCount.assertInsertCount;
+import static ua.challenge.core.sql.tracker.AssertSqlCount.assertSelectCount;
 
 
 /**
@@ -64,6 +66,10 @@ public class HibernateTestingTest extends JPAUnitTestCase {
                     .createNativeQuery("select id from persons", Person.class).getResultList();
 
             persons.forEach(System.out::println);
+
+            assertThat(persons.size()).isEqualTo(1);
+            assertSelectCount(4);
+            assertInsertCount(5);
         });
     }
 

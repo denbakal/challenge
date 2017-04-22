@@ -10,6 +10,7 @@ import org.junit.Before;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import ua.challenge.core.datasource.latency.LatencyDatasource;
 import ua.challenge.core.datasource.latency.ThreadSleepLatencySimulator;
+import ua.challenge.core.sql.tracker.SqlCountDatasource;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -92,8 +93,11 @@ public abstract class JPAUnitTestCase {
 
         ThreadSleepLatencySimulator simulator = new ThreadSleepLatencySimulator(10L);
 
-        return new P6DataSource(
-                new LatencyDatasource(datasource, simulator));
+        return new SqlCountDatasource(
+                new P6DataSource(
+                    new LatencyDatasource(datasource, simulator)
+                )
+        );
     }
 
     private Interceptor interceptor() {
