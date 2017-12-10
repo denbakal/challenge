@@ -36,14 +36,11 @@ public class SimpleCORSFilter implements Filter {
                 .setExpiration(calendar.getTime())
                 .signWith(SignatureAlgorithm.HS512, secret)
                 .compact();
-        System.out.println("0 >>>>>>>>>>>>>>>>> request = " + request.getServletPath());
 
         if ("/country/get".equals(request.getServletPath())) {
             if (request.getCookies() != null) {
                 Optional<Cookie> validToken = Arrays.stream(request.getCookies())
                         .filter(c -> "VALID-TOKEN".equals(c.getName())).findFirst();
-
-                System.out.println("1 >>>>>>>>>>>>>>>>> request = " + request.getServletPath());
 
                 if (validToken.isPresent()) {
                     System.out.println("2 >>>>>>>>>>>>>>>>> cookie = " + validToken.get().getValue());
