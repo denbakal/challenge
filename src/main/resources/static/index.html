@@ -67,7 +67,7 @@
         function sendName() {
             var key = document.getElementById('key').value;
             var value = document.getElementById('name').value;
-            stompClient.send("/app/actions", {}, JSON.stringify({ 'id': key, 'value': value }));
+            stompClient.send("/app/actions/" + key, {}, JSON.stringify({ 'id': key, 'value': value }));
         }
 
         function showGreeting(message) {
