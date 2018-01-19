@@ -213,6 +213,11 @@
             <artifactId>hibernate-testing</artifactId>
             <version>5.2.9.Final</version>
         </dependency>
+        <dependency>
+            <groupId>com.vladmihalcea</groupId>
+            <artifactId>hibernate-types-52</artifactId>
+            <version>1.2.0</version>
+        </dependency>
 
         <dependency>
             <groupId>org.postgresql</groupId>
