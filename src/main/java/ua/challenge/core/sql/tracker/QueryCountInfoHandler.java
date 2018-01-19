@@ -28,7 +28,7 @@ public class QueryCountInfoHandler implements QueryHandler {
     }
 
     private QueryType getQueryType(String query) {
-        final String trimmedQuery = removeRedundantSymbols(query);
+        final String trimmedQuery = removeRedundantSymbols(query).replaceAll("\\{", "").trim();
         final char firstChar = trimmedQuery.charAt(0);
 
         final QueryType type;
